@@ -1,0 +1,109 @@
+﻿@page
+@model WebApp.Areas.Paquetes.Pages.IndexModel
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    ViewData["Title"] = "Mis paquetes";
+    Layout = "_Layout";
+}
+@section Styles{
+    <!-- SweetAlert2 -->
+    <link rel="stylesheet" href="~/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css">
+    <!--Bootstrap-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
+}
+
+<!--Contenido principal-->
+<div>
+    <div>
+        <a asp-area="Paquetes" asp-page="Create">Crear</a>
+    </div>
+    <!--Tabla que contendrá los datos de los paquetes-->
+    <div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">Nombre del paquete</th>
+                    <th scope="col">Tipo de Envío</th>
+                    <th scope="col">Monto a cancelar</th>
+                    <th scope="col"> Información</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.Paquetes.Count > 0)
+                {
+                    @foreach (var item in Model.Paquetes)
+                    {
+                        <tr>
+                            <th scope="row">@item.Nombre_Paquete</th>
+                            <td>
+                                @if (@item.Envio_Especial == true)
+                                {<text>Envío con prioridad</text> }
+                            else
+                            {
+                                {<text>Envío normal</text>
+                            }
+                        }
+                            </td>
+                            <td>@item.Monto_Pagar_Prop</td>
+                            <td><button type="button" data-bs-toggle="modal" data-bs-target="#MostrarDetalles" onclick="Prueba()" > <i class="fas fa-eye"></i> Mostrar detalles</button></td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="12" class="text-center">No se encontraron registros</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <!--Modal-->
+    <div>
+        <div class="modal fade" id="MostrarDetalles" tabindex="-1" aria-labelledby="Mostrar_Detalles_Label" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5>Información del paquete: @foreach (var item in Model.Paquetes) { @item.Nombre_Paquete}</h5>
+                        <button></button>
+                    </div>
+                </div>
+                <div class="modal-body">
+
+                </div>
+                <div class="modal-footer">
+                    <button></button>
+                    <button></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <!-- Pager -->
+    <script src="~/js/pager.js"></script>
+    <!-- SweetAlert2 -->
+    <script src="~/plugins/sweetalert2/sweetalert2.min.js"></script>
+    <!--Boostrap-->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js" integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous"></script>
+    <script>
+        $(document).ready(function () {
+            $('#a-paquete').addClass('active');
+
+            $('#sizePage').change(function () {
+                filterPaginate("sizePage", $(this).val())
+            });
+            $('.page-link').click(function () {
+                filterPaginate("currentPage", $(this).data("page"))
+            });
+            $('#searchString').on('keyup', function (e) {
+                if (e.key === "Enter" || e.keyCode == 13) {
+                    filterPaginate("searchString", $(this).val());
+                }
+            });
+        });
+    </script>
+    @await Component.InvokeAsync("Notyf");
+}
