@@ -15,7 +15,7 @@ namespace ApplicationCore.Enum
         Decoracion,
         [Display(Name = "Electrodoméstico")]
         Electrodomestico,
-        [Display(Name = "Muebles")]
+        [Display(Name = "Mueble")]
         Muebles,
         [Display(Name = "Vestimenta")]
         Vestimenta

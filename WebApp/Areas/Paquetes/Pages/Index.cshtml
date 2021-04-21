@@ -1,93 +1,167 @@
 ﻿@page
+@using Microsoft.AspNetCore.Antiforgery
 @model WebApp.Areas.Paquetes.Pages.IndexModel
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
-@{
-    ViewData["Title"] = "Mis paquetes";
+@inject IAntiforgery antiforgery
+@{ ViewData["Title"] = "Mis paquetes";
     Layout = "_Layout";
-}
+    var tokenSet = antiforgery.GetAndStoreTokens(HttpContext); }
 @section Styles{
     <!-- SweetAlert2 -->
     <link rel="stylesheet" href="~/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css">
-    <!--Bootstrap-->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
 }
-
 <!--Contenido principal-->
-<div>
+<!--Parte superior del contenido-->
+<section class="content-header">
+    <h4 style="text-align: right;">Adminsitrar paquetes.</h4>
     <div>
-        <a asp-area="Paquetes" asp-page="Create">Crear</a>
+        <a asp-area="Paquetes" asp-page="Create" class="btn btn-outline-success">
+            <i class="fas fa-plus-circle"></i>
+            Nueva solicitud de envío
+        </a>
     </div>
-    <!--Tabla que contendrá los datos de los paquetes-->
+</section>
+<section class="content">
     <div>
-        <table class="table">
+        <!--En esta tabla se muestran los datos obtenidos por GET-->
+        <table class="table table-dark table-striped">
             <thead>
                 <tr>
                     <th scope="col">Nombre del paquete</th>
                     <th scope="col">Tipo de Envío</th>
                     <th scope="col">Monto a cancelar</th>
                     <th scope="col"> Información</th>
+                    <th scope="col">Eliminar</th>
                 </tr>
             </thead>
             <tbody>
                 @if (Model.Paquetes.Count > 0)
                 {
-                    @foreach (var item in Model.Paquetes)
-                    {
-                        <tr>
-                            <th scope="row">@item.Nombre_Paquete</th>
-                            <td>
-                                @if (@item.Envio_Especial == true)
-                                {<text>Envío con prioridad</text> }
-                            else
-                            {
-                                {<text>Envío normal</text>
-                            }
-                        }
-                            </td>
-                            <td>@item.Monto_Pagar_Prop</td>
-                            <td><button type="button" data-bs-toggle="modal" data-bs-target="#MostrarDetalles" onclick="Prueba()" > <i class="fas fa-eye"></i> Mostrar detalles</button></td>
-                        </tr>
-                    }
-                }
-                else
-                {
-                    <tr>
-                        <td colspan="12" class="text-center">No se encontraron registros</td>
-                    </tr>
-                }
+    @foreach (var item in Model.Paquetes)
+    {
+    <tr>
+        <th scope="row">@item.Nombre_Paquete</th>
+        <td>
+            @if (@item.Envio_Especial == true)
+            {
+    <span class="badge bg-warning">
+        <i class="fas fa-shipping-fast"></i>
+        Prioridad de envío
+    </span> }
+else
+{
+    <span class="badge bg-light text-dark">
+        <i class="fas fa-truck"></i>
+        Envío normal
+    </span>}
+        </td>
+        <td>$ @item.Monto_Pagar_Prop</td>
+        <td>
+            <button type="button" id="Mostrar_Info" onclick="Users('?handler=Select&Id=@item.Id')" class="btn btn-outline-info">
+                <i class="fas fa-eye"></i>
+                Mostrar detalles
+            </button>
+        </td>
+        <td>
+            <a class="btn btn-danger" onclick="Eliminar('?handler=Delete&Id=@item.Id')">
+                <i class="fas fa-trash"></i>
+            </a>
+        </td>
+    </tr>} }
+else
+{
+    <tr>
+        <td colspan="12" class="text-center">No se encontraron registros</td>
+    </tr>}
             </tbody>
         </table>
     </div>
-
-    <!--Modal-->
     <div>
-        <div class="modal fade" id="MostrarDetalles" tabindex="-1" aria-labelledby="Mostrar_Detalles_Label" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5>Información del paquete: @foreach (var item in Model.Paquetes) { @item.Nombre_Paquete}</h5>
-                        <button></button>
-                    </div>
-                </div>
-                <div class="modal-body">
+        <!--Este modal alberga la información obtenida por JSON-->
+        <div>
+            <div class="modal fade" id="Modal_Detalles" tabindex="-1" aria-labelledby="ModalDetallesLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="ModalDetallesLabel">Detalles del paquete</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <!--Se mostrará la información por medio de INPUTs-->
+                            <div class="row mb-4">
+                                <div class="col">
+                                    <label class="text-muted">Nombre del paquete</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text">
+                                            <i class="fas fa-box"></i>
+                                        </span>
+                                        <input type="text" class="form-control" id="Nombre_Paquete" aria-describedby="nombre-paquete" disabled />
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <label class="text-muted">Tipo de paquete</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text">
+                                            <i class="fas fa-tv"></i>
+                                        </span>
+                                        <input type="text" class="form-control" id="Tipo_Paquete" aria-describedby="tipo-paquete" disabled />
+                                    </div>
+                                </div>
+                            </div>
 
-                </div>
-                <div class="modal-footer">
-                    <button></button>
-                    <button></button>
+                            <div class="row mb-4">
+                                <div class="col">
+                                    <label class="text-muted">Peso del paquete</label>
+                                    <div class="input-group">
+                                        <input class="form-control" id="Peso_Paquete" disabled />
+                                        <span class="input-group-text">
+                                            lb
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <label class="text-muted">Fecha de entrega</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text">
+                                            <i class="far fa-calendar"></i>
+                                        </span>
+                                        <input type="datetime" class="form-control" id="Fecha_Entrega" disabled />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row mb-4 form-check">
+                                <div class="col">
+                                    <input type="checkbox" class="form-check-input" id="Envio_Especial" disabled />
+                                    <label class='text-muted' id="Label_Check"></label>
+                                </div>
+                            </div>
+                            <div class="row mb-4">
+                                <div class="col">
+                                    <label class="text-muted">Monto a pagar</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text">$</span>
+                                        <input class="form-control" id="Monto_Pagar" disabled />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer" style="display: flex; justify-content: space-around;">
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
+
+</section>
 
 @section Scripts{
     <!-- Pager -->
     <script src="~/js/pager.js"></script>
     <!-- SweetAlert2 -->
     <script src="~/plugins/sweetalert2/sweetalert2.min.js"></script>
-    <!--Boostrap-->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js" integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous"></script>
+    <!--JS personal-->
     <script>
         $(document).ready(function () {
             $('#a-paquete').addClass('active');
@@ -103,6 +177,117 @@
                     filterPaginate("searchString", $(this).val());
                 }
             });
+            Users = (url) => {
+                $.ajax({
+                    type: "GET",
+                    url: url,
+                    contentType: false,
+                    processData: false,
+                    headers: {
+                        '@tokenSet.HeaderName': '@tokenSet.RequestToken'
+                    },
+                    success: function (data) {
+                        const { info } = data;
+                        const { id, nombre_Paquete, tipo_Paquete, peso_Paquete, fecha_Entrega, envio_Especial, monto_Pagar_Prop} = info;
+
+                        $("#Nombre_Paquete").val(nombre_Paquete);
+
+                        switch (tipo_Paquete) {
+                            case 0:
+                                $("#Tipo_Paquete").val("Accesorio");
+                                break;
+                            case 1:
+                                $("#Tipo_Paquete").val("Decoración");
+                                break;
+                            case 2:
+                                $("#Tipo_Paquete").val("Electrodoméstico");
+                                break;
+                            case 3:
+                                $("#Tipo_Paquete").val("Mueble");
+                                break;
+                            case 4:
+                                $("#Tipo_Paquete").val("Vestimenta");
+                                break;
+                        }
+
+                        $("#Peso_Paquete").val(peso_Paquete);
+                        $("#Fecha_Entrega").val(fecha_Entrega);
+
+                        if (envio_Especial == true) {
+                            $("#Envio_Especial").prop('checked', envio_Especial);
+                            $("#Label_Check").text(`Con prioridad de envío`);
+                        } else {
+                            $("#Envio_Especial").prop('checked', envio_Especial);
+                            $("#Label_Check").text(`Sin prioridad de envío`);
+                        }
+
+                        $("#Monto_Pagar").val(monto_Pagar_Prop);
+
+                        Mostrar_Modal(id);
+                     },
+                })
+            }
+            function Mostrar_Modal(id) {
+                let url = new URL(window.location.href);
+                let urlEdit = url.origin + url.pathname + `/Update?Id=${id}`;
+                $(".modal-footer")
+                    .append(`
+                            <a href="${urlEdit}" class="btn btn-outline-success">
+                                <i class="fas fa-pencil-alt"></i>
+                                Editar
+                            </a>
+                            <button class='btn btn-outline-danger' data-bs-dismiss="modal">
+                            <i class="fas fa-times-circle"></i>
+                                Cerrar detalles
+                            </button>`
+                        );
+                $("#Modal_Detalles").modal("show");
+            }
+            $('#Modal_Detalles').on('hidden.bs.modal', function () {
+                $(".modal-footer").empty();
+            })
+            Eliminar = (url) => {
+                Swal.fire({
+                    title: '¿Deseas eliminar este registro?',
+                    text: "No podrás recuperar esta solicitud de envío.",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Deseo eliminarlo.',
+                    cancelButtonText: 'Cancelar.',
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            type: "POST",
+                            url: url,
+                            contentType: false,
+                            processData: false,
+                            headers: {
+                                '@tokenSet.HeaderName' : '@tokenSet.RequestToken'
+                            },
+                            success: function (res) {
+                                if (res.deleted) {
+                                    Swal.fire({
+                                        title: 'Registro eliminado.',
+                                        subtitle: 'Has eliminado esta solicitud con éxito.',
+                                        icon: 'success',
+                                        timer: 2000
+                                    })
+                                    setTimeout(function () { location.reload(); }, 2000);
+                                }
+                            },
+                            error: function (err) {
+                                Swal.fire({
+                                    title: 'Eliminar registro cancelado.',
+                                    subtitle: 'Tu registro no ha sido eliminado.',
+                                    icon: 'error',
+                                    timer: 2000
+                                });
+                            }
+                        });
+                    }
+                })
+                return false;
+            }
         });
     </script>
     @await Component.InvokeAsync("Notyf");

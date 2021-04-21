@@ -17,16 +17,16 @@ namespace WebApp.Areas.Paquetes.Pages
     public class IndexModel : PageModel
     {
         private readonly MyRepository<Paquete> _repository;
-        public INotyfService _INotyService { get; }
-        private readonly IAppLogger<IndexModel> _logger;
-        public IndexModel(MyRepository<Paquete> repository, INotyfService iNotyService, IAppLogger<IndexModel> logger = null)
+        public INotyfService _notyfService { get; }
+        private readonly IAppLogger<UpdateModel> _logger;
+        public IndexModel(MyRepository<Paquete> repository, INotyfService notyfService, IAppLogger<UpdateModel> logger)
         {
             _repository = repository;
-            _INotyService = iNotyService;
+            _notyfService = notyfService;
             _logger = logger;
         }
-        public List<Paquete> Paquetes { get; set; }
         public Paquete Paquete { get; set; }
+        public List<Paquete> Paquetes { get; set; }
         public UIPaginationModel UIPagination { get; set; }
         public async Task OnGetAsync(string searchString, int? currentPage, int? sizePage)
         {
@@ -43,23 +43,45 @@ namespace WebApp.Areas.Paquetes.Pages
                 })
                 );
         }
-        public async Task Prueba(int Id)
+        public async Task<JsonResult> OnGetSelect(int Id)
+        {
+            try
+            {
+                var paquete = await _repository.GetByIdAsync(Id);
+                if (paquete == null)
+                {
+                    _notyfService.Warning($"El paquete, con id {Id}, no ha sido encontrado.");
+                    return new JsonResult(new { selected = false });
+                }
+                Paquete = paquete; 
+                return new JsonResult(new
+                {
+                    info = Paquete
+                });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogWarning(ex.Message);
+                throw;
+            }
+        }
+        public async Task<JsonResult> OnPostDelete(int Id)
         {
             try
             {
                 var paquete = await _repository.GetByIdAsync(Id);
                 if(paquete == null)
                 {
-                    _INotyService.Warning($"Paquete identificado por {Id}, no ha sido encontrado.");
-                    RedirectToPage("Index");
+                    _notyfService.Warning($"El paquete, con id {Id}, no ha sido encontrado.");
+                    return new JsonResult(new { deleted = false });
                 }
-                Paquete = paquete;
-                Page();
+                await _repository.DeleteAsync(paquete);
+                return new JsonResult(new { deleted = true });
             }
             catch (Exception ex)
             {
                 _logger.LogWarning(ex.Message);
-                throw;
+                return new JsonResult(new { deleted = false });
             }
         }
     }
