@@ -12,6 +12,10 @@ namespace ApplicationCore.Entities
         public int Id { get; set; }
         private double _Monto_A_Pagar;
         public string Nombre_Paquete { get; set; }
+        public string Fotografia { get; set; }
+        public string Nombre_Fotografia() {
+            return Nombre_Paquete + '-' + Guid.NewGuid().ToString();
+        }
         public Tipo_Paquete Tipo_Paquete { get; set; }
         public double Peso_Paquete { get; set; }
         public DateTime Fecha_Entrega { get; set; }

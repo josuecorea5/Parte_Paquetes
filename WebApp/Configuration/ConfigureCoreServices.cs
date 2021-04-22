@@ -5,8 +5,10 @@ using ApplicationCore.Services;
 using FluentValidation.AspNetCore;
 using Infraestructure.Data;
 using Infraestructure.Loggin;
+using Infraestructure.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using WebApp.Services;
 
 namespace WebApp.Configuration
 {
@@ -18,7 +20,6 @@ namespace WebApp.Configuration
 
             services.AddSingleton<IUriComposer>(new UriComposer(configuration.Get<ApplicationSettings>()));
             services.AddScoped(typeof(IAppLogger<>), typeof(LoggerAdapter<>));
-
             return services;
         }
 

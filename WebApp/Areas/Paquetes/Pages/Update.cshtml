@@ -24,10 +24,21 @@
                 Paquete con Id N° @Model.Paquete.Id
             </div>
             <div class="card-body">
-                <form method="POST" asp-action="Create" asp-route-id="@Model.Paquete.Id" autocomplete="off">
+                <form method="POST" asp-action="Create" asp-route-id="@Model.Paquete.Id" autocomplete="off" enctype="multipart/form-data">
                     <div class="row">
                         <div class="col mb-4">
-                            <label class="text-muted">Nombre del paquete</label>
+                            <label class="text-muted">Fotografía del contenido</label>
+                            <div class="input-group">
+                                <span class="input-group-text">
+                                    <i class="fas fa-camera-retro"></i>
+                                </span>
+                                <input type="file" accept="image/png, image/jpeg, image/jpg" name="Subir_Archivo" class="form-control"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col mb-4">
+                            <label class="text-muted">Contenido</label>
                             <div class="input-group">
                                 <span class="input-group-text">
                                     <i class="fas fa-box"></i>
@@ -37,7 +48,7 @@
                             <span asp-validation-for="Paquete.Nombre_Paquete" class="text-danger"></span>
                         </div>
                         <div class="col mb-4">
-                            <label class="text-muted">Tipo de paquete</label>
+                            <label class="text-muted">Tipo de contenido</label>
                             <div class="input-group">
                                 <span class="input-group-text">
                                     <i class="fas fa-tv"></i>
@@ -74,9 +85,9 @@
                     </div>
                     <div class="row form-check">
                         <div class="col mb-4">
-                            <input type="checkbox" class="form-check-input" asp-for="Paquete.Envio_Especial"/>
+                            <input type="checkbox" id="Check_Box" class="form-check-input" asp-for="Paquete.Envio_Especial"/>
                             <span asp-validation-for="Paquete.Envio_Especial" class="text-danger"></span>
-                            <label class="text-muted">Activar prioridad de envío</label>
+                            <label for="Check_Box" class="text-muted">Activar prioridad de envío</label>
                         </div>
                     </div>
                     <div style="display: flex; justify-content: space-around;">

@@ -27,7 +27,8 @@
         <table class="table table-dark table-striped">
             <thead>
                 <tr>
-                    <th scope="col">Nombre del paquete</th>
+                    <th scope="col">Imagen</th>
+                    <th scope="col">Contenido</th>
                     <th scope="col">Tipo de Envío</th>
                     <th scope="col">Monto a cancelar</th>
                     <th scope="col"> Información</th>
@@ -37,42 +38,49 @@
             <tbody>
                 @if (Model.Paquetes.Count > 0)
                 {
-    @foreach (var item in Model.Paquetes)
-    {
-    <tr>
-        <th scope="row">@item.Nombre_Paquete</th>
-        <td>
-            @if (@item.Envio_Especial == true)
-            {
-    <span class="badge bg-warning">
-        <i class="fas fa-shipping-fast"></i>
-        Prioridad de envío
-    </span> }
-else
-{
-    <span class="badge bg-light text-dark">
-        <i class="fas fa-truck"></i>
-        Envío normal
-    </span>}
-        </td>
-        <td>$ @item.Monto_Pagar_Prop</td>
-        <td>
-            <button type="button" id="Mostrar_Info" onclick="Users('?handler=Select&Id=@item.Id')" class="btn btn-outline-info">
-                <i class="fas fa-eye"></i>
-                Mostrar detalles
-            </button>
-        </td>
-        <td>
-            <a class="btn btn-danger" onclick="Eliminar('?handler=Delete&Id=@item.Id')">
-                <i class="fas fa-trash"></i>
-            </a>
-        </td>
-    </tr>} }
-else
-{
-    <tr>
-        <td colspan="12" class="text-center">No se encontraron registros</td>
-    </tr>}
+                    @foreach (var item in Model.Paquetes)
+                    {
+                        <tr>
+                            <th scope="row">
+                                <img src="@item.Fotografia" style="width: 100px;" class="rounded" alt="@item.Nombre_Fotografia()" />
+                            </th>
+                            <td>@item.Nombre_Paquete</td>
+                            <td>
+                                @if (@item.Envio_Especial == true)
+                                {
+                                    <span class="badge bg-warning">
+                                        <i class="fas fa-shipping-fast"></i>
+                                        Prioridad de envío
+                                    </span> 
+                                    }
+                                else
+                                {
+                                    <span class="badge bg-light text-dark">
+                                        <i class="fas fa-truck"></i>
+                                        Envío normal
+                                    </span>
+                                    }
+                            </td>
+                            <td>$ @item.Monto_Pagar_Prop</td>
+                            <td>
+                                <button type="button" id="Mostrar_Info" onclick="Users('?handler=Select&Id=@item.Id')" class="btn btn-outline-info">
+                                    <i class="fas fa-eye"></i>
+                                    Mostrar detalles
+                                </button>
+                            </td>
+                            <td class="text-center">
+                                <a class="btn btn-danger" onclick="Eliminar('?handler=Delete&Id=@item.Id')">
+                                    <i class="fas fa-trash"></i>
+                                </a>
+                            </td>
+                        </tr>
+                        }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="12" class="text-center">No se encontraron registros</td>
+                    </tr>}
             </tbody>
         </table>
     </div>
@@ -90,7 +98,7 @@ else
                             <!--Se mostrará la información por medio de INPUTs-->
                             <div class="row mb-4">
                                 <div class="col">
-                                    <label class="text-muted">Nombre del paquete</label>
+                                    <label class="text-muted">Contenido</label>
                                     <div class="input-group">
                                         <span class="input-group-text">
                                             <i class="fas fa-box"></i>
@@ -99,7 +107,7 @@ else
                                     </div>
                                 </div>
                                 <div class="col">
-                                    <label class="text-muted">Tipo de paquete</label>
+                                    <label class="text-muted">Tipo de contenido</label>
                                     <div class="input-group">
                                         <span class="input-group-text">
                                             <i class="fas fa-tv"></i>
@@ -138,7 +146,7 @@ else
                             </div>
                             <div class="row mb-4">
                                 <div class="col">
-                                    <label class="text-muted">Monto a pagar</label>
+                                    <label class="text-muted">Monto a cancelar</label>
                                     <div class="input-group">
                                         <span class="input-group-text">$</span>
                                         <input class="form-control" id="Monto_Pagar" disabled />

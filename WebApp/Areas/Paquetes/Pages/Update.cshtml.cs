@@ -6,8 +6,10 @@ using ApplicationCore.Entities;
 using ApplicationCore.Interfaces;
 using AspNetCoreHero.ToastNotification.Abstractions;
 using Infraestructure.Data;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using WebApp.Services;
 
 namespace WebApp.Areas.Paquetes.Pages
 { 
@@ -16,12 +18,14 @@ namespace WebApp.Areas.Paquetes.Pages
         private readonly MyRepository<Paquete> _repository;
         public INotyfService _notyfService { get;}
         private readonly IAppLogger<UpdateModel> _logger;
+        private readonly IFileUploadService _fileUploadService;
 
-        public UpdateModel(MyRepository<Paquete> repository, INotyfService notyfService, IAppLogger<UpdateModel> logger)
+        public UpdateModel(MyRepository<Paquete> repository, INotyfService notyfService, IAppLogger<UpdateModel> logger, IFileUploadService fileUploadService)
         {
             _repository = repository;
             _notyfService = notyfService;
             _logger = logger;
+            _fileUploadService = fileUploadService;
         }
         [BindProperty]
         public Paquete Paquete { get; set; }
@@ -44,7 +48,7 @@ namespace WebApp.Areas.Paquetes.Pages
                 throw;
             }
         }
-        public async Task<IActionResult> OnPost(int Id)
+        public async Task<IActionResult> OnPost(int Id, IFormFile Subir_Archivo)
         {
             try
             {
@@ -56,6 +60,7 @@ namespace WebApp.Areas.Paquetes.Pages
                 }
                 if (ModelState.IsValid)
                 {
+                    paquete.Fotografia = await _fileUploadService.LocalStorage(Subir_Archivo, Paquete.Nombre_Fotografia(), "paquetes");
                     paquete.Nombre_Paquete = Paquete.Nombre_Paquete;
                     paquete.Tipo_Paquete = Paquete.Tipo_Paquete;
                     paquete.Fecha_Entrega = Paquete.Fecha_Entrega;

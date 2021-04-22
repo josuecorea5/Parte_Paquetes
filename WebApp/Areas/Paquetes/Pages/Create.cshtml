@@ -22,20 +22,30 @@
                 <h4 class="card-title">Nueva solicitud de envío.</h4>
             </div>
             <div class="card-body">
-                <form method="post" asp-action="Create" autocomplete="off">
+                <form method="post" asp-action="Create" autocomplete="off" enctype="multipart/form-data">
                     <div class="row mb-4">
                         <div class="col">
-                            <label>Nombre del paquete</label>
+                            <label>Fotografía del paquete</label>
+                            <div class="input-group">
+                                <span class="input-group-text">
+                                    <i class="fas fa-camera-retro"></i>
+                                </span>
+                                <input type="file" accept="image/png, image/jpeg, image/jpg" name="Subir_Archivo" class="form-control"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mb-4">
+                        <div class="col">
+                            <label>Contenido del paquete</label>
                             <div class="input-group">
                                 <span class="input-group-text">
                                     <i class="fas fa-box"></i>
                                 </span>
                                 <input type="text" class="form-control" asp-for="Paquete.Nombre_Paquete" placeholder="El texto debe de ser autodescriptivo"/>
                             </div>
-                            <span asp-validation-for="Paquete.Nombre_Paquete" class="text-danger"></span>
                         </div>
                         <div class="col">
-                            <label>Tipo de paquete</label>
+                            <label>Tipo de contenido</label>
                             <div class="input-group">
                                 <span class="input-group-text">
                                     <i class="fas fa-tv"></i>

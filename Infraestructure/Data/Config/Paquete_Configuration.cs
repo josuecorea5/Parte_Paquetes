@@ -18,6 +18,7 @@ namespace Infraestructure.Data.Config
             builder.Property(c => c.Nombre_Paquete)
                 .HasMaxLength(150)
                 .IsRequired();
+            builder.Property(c => c.Fotografia);
             builder.Property(c => c.Tipo_Paquete)
                 .IsRequired();
             builder.Property(c => c.Peso_Paquete)

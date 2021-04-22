@@ -5,8 +5,10 @@ using System.Threading.Tasks;
 using ApplicationCore.Entities;
 using AspNetCoreHero.ToastNotification.Abstractions;
 using Infraestructure.Data;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using WebApp.Services;
 
 namespace WebApp.Areas.Paquetes.Pages
 {
@@ -14,22 +16,25 @@ namespace WebApp.Areas.Paquetes.Pages
     {
         private readonly MyRepository<Paquete> _repository;
         private INotyfService _INotyfService { get; }
-        public CreateModel(MyRepository<Paquete> repository, INotyfService iNotyfService)
+        private readonly IFileUploadService _fileUploadService;
+        public CreateModel(MyRepository<Paquete> repository, INotyfService iNotyfService, IFileUploadService fileUploadService)
         {
             _repository = repository;
             _INotyfService = iNotyfService;
+            _fileUploadService = fileUploadService;
         }
         [BindProperty]
         public Paquete Paquete { get; set; }
         public void OnGet()
         {
         }
-        public async Task<IActionResult> OnPost()
+        public async Task<IActionResult> OnPost(IFormFile Subir_Archivo)
         {
             try
             {
                 if (ModelState.IsValid)
                 {
+                    Paquete.Fotografia = await _fileUploadService.LocalStorage(Subir_Archivo, Paquete.Nombre_Fotografia(), "paquetes");
                     await _repository.AddAsync(Paquete);
                     _INotyfService.Success("Solicitud enviada de manera exitosa");
                 }
