@@ -10,24 +10,24 @@
     <link rel="stylesheet" href="~/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
 }
 
-<section class="content-header">
-    <h4 style="text-align: right;">Actualizando el registro.</h4>
-    <a type="button" class="btn btn-outline-danger" asp-area="Paquetes" asp-page="Index">
+<section class="content-header contenido-header">
+    <h3 style="text-align: center;">Actualizando el registro</h3>
+    <a type="button" class="btn btn-volver" asp-area="Paquetes" asp-page="Index">
         <i class="fas fa-undo"></i>
         Volver al administrador de paquetes
     </a>
 </section>
 <section class="content">
     <div>
-        <div class="card">
+        <div class="card contenido-header">
             <div class="card-header">
                 Paquete con Id N° @Model.Paquete.Id
             </div>
-            <div class="card-body">
+            <div class="card-body background-update">
                 <form method="POST" asp-action="Create" asp-route-id="@Model.Paquete.Id" autocomplete="off" enctype="multipart/form-data">
                     <div class="row">
                         <div class="col mb-4">
-                            <label class="text-muted">Fotografía del contenido</label>
+                            <label class="">Fotografía del contenido</label>
                             <div class="input-group">
                                 <span class="input-group-text">
                                     <i class="fas fa-camera-retro"></i>
@@ -36,9 +36,9 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row">
+                    <div class="row update-campos">
                         <div class="col mb-4">
-                            <label class="text-muted">Contenido</label>
+                            <label class="">Contenido</label>
                             <div class="input-group">
                                 <span class="input-group-text">
                                     <i class="fas fa-box"></i>
@@ -48,7 +48,7 @@
                             <span asp-validation-for="Paquete.Nombre_Paquete" class="text-danger"></span>
                         </div>
                         <div class="col mb-4">
-                            <label class="text-muted">Tipo de contenido</label>
+                            <label class="">Tipo de contenido</label>
                             <div class="input-group">
                                 <span class="input-group-text">
                                     <i class="fas fa-tv"></i>
@@ -64,16 +64,16 @@
                             <span asp-validation-for="Paquete.Tipo_Paquete" class="text-danger"></span>
                         </div>
                     </div>
-                    <div class="row">
+                    <div class="row update-campos">
                         <div class="col mb-4">
-                            <label class="text-muted">Fecha de entrega</label>
+                            <label class="">Fecha de entrega</label>
                             <div class="input-group">
                                 <input class="form-control" asp-for="Paquete.Fecha_Entrega" />
                                 <span asp-validation-for="Paquete.Fecha_Entrega" class="text-danger"></span>
                             </div>
                         </div>
                         <div class="col mb-4">
-                            <label class="text-muted">Peso del paquete</label>
+                            <label class="">Peso del paquete</label>
                             <div class="input-group">
                                 <input class="form-control" asp-for="Paquete.Peso_Paquete" placeholder="Expresa la cantidad en libras"/>
                                 <span class="input-group-text">
@@ -87,15 +87,15 @@
                         <div class="col mb-4">
                             <input type="checkbox" id="Check_Box" class="form-check-input" asp-for="Paquete.Envio_Especial"/>
                             <span asp-validation-for="Paquete.Envio_Especial" class="text-danger"></span>
-                            <label for="Check_Box" class="text-muted">Activar prioridad de envío</label>
+                            <label for="Check_Box" class="">Activar prioridad de envío</label>
                         </div>
                     </div>
                     <div style="display: flex; justify-content: space-around;">
-                        <button type="submit" class="btn btn-outline-success">
+                        <button type="submit" class="btn btn-editar">
                             <i class="fas fa-share-square"></i>
                             Actualizar paquete
                         </button>
-                        <button type="reset" class='btn btn-outline-warning'>
+                        <button type="reset" class='btn btn-outline-warning btn-recuperar'>
                             <i class="fas fa-sync-alt"></i>
                             Recuperar los datos originales
                         </button>

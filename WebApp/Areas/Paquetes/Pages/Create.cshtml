@@ -6,18 +6,18 @@
     Layout = "_Layout";
 }
 
-<section class="content-header">
-    <h4 style="text-align: right;">Añade una nueva solicitud.</h4>
-    <a type="button" class="btn btn-outline-danger" asp-area="Paquetes" asp-page="Index">
+<section class="contenido-header content-header">
+    <h3 style="text-align: center;" class="mb-5">Añade una nueva solicitud.</h3>
+    <a type="button" class="btn btn-volver " asp-area="Paquetes" asp-page="Index">
         <i class="fas fa-undo"></i>
         Volver al administrador de paquetes
     </a>
 </section>
 
 <section class="content">
-    <div>
+    <div class="contenido">
         <!--Formulario-->
-        <div class="card">
+        <div class="form-create card card-form">
             <div class="card-header">
                 <h4 class="card-title">Nueva solicitud de envío.</h4>
             </div>
@@ -30,11 +30,11 @@
                                 <span class="input-group-text">
                                     <i class="fas fa-camera-retro"></i>
                                 </span>
-                                <input type="file" accept="image/png, image/jpeg, image/jpg" name="Subir_Archivo" class="form-control"/>
+                                <input  type="file" accept="image/png, image/jpeg, image/jpg" name="Subir_Archivo" class="form-control"/>
                             </div>
                         </div>
                     </div>
-                    <div class="row mb-4">
+                    <div class="row mb-4 form-create">
                         <div class="col">
                             <label>Contenido del paquete</label>
                             <div class="input-group">
@@ -44,7 +44,7 @@
                                 <input type="text" class="form-control" asp-for="Paquete.Nombre_Paquete" placeholder="El texto debe de ser autodescriptivo"/>
                             </div>
                         </div>
-                        <div class="col">
+                        <div class="col mt-4">
                             <label>Tipo de contenido</label>
                             <div class="input-group">
                                 <span class="input-group-text">
@@ -61,7 +61,7 @@
                             <span asp-validation-for="Paquete.Tipo_Paquete" class="text-danger"></span>
                         </div>
                     </div>
-                    <div class="row mb-4">
+                    <div class="row mb-4 form-create">
                         <div class="col">
                             <label>Fecha de entrega</label>
                             <div class="input-group">
@@ -69,7 +69,7 @@
                             </div>
                             <span asp-validation-for="Paquete.Fecha_Entrega" class="text-danger"></span>
                         </div>
-                        <div class="col">
+                        <div class="col mt-4">
                             <label>Peso del paquete</label>
                             <div class="input-group">
                                 <input class="form-control" asp-for="Paquete.Peso_Paquete" placeholder="Expresa la cantidad en libras"/>
@@ -88,11 +88,11 @@
                         </div>
                     </div>
                     <div style="display: flex; justify-content: space-around;">
-                        <button type="submit" class="btn btn-outline-success">
+                        <button type="submit" class="btn btn-send-solicitud">
                             <i class="fas fa-share-square"></i>
                             Enviar solicitud
                         </button>
-                        <button type="reset" class='btn btn-outline-warning'>
+                        <button type="reset" class='btn vaciar-solicitud'>
                             <i class="fas fa-dumpster"></i>
                             Vaciar campos
                         </button>

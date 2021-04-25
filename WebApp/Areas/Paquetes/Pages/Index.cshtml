@@ -13,9 +13,9 @@
 <!--Contenido principal-->
 <!--Parte superior del contenido-->
 <section class="content-header">
-    <h4 style="text-align: right;">Adminsitrar paquetes.</h4>
-    <div>
-        <a asp-area="Paquetes" asp-page="Create" class="btn btn-outline-success">
+    <h3 style="text-align: center;">Adminsitrar paquetes</h3>
+    <div class="btn-create-solicitud">
+        <a asp-area="Paquetes" asp-page="Create" class="btn">
             <i class="fas fa-plus-circle"></i>
             Nueva solicitud de envío
         </a>
@@ -24,9 +24,9 @@
 <section class="content">
     <div>
         <!--En esta tabla se muestran los datos obtenidos por GET-->
-        <table class="table table-dark table-striped">
+        <table class="table table-striped table-registros">
             <thead>
-                <tr>
+                <tr class="encabezado-tabla">
                     <th scope="col">Imagen</th>
                     <th scope="col">Contenido</th>
                     <th scope="col">Tipo de Envío</th>
@@ -35,7 +35,7 @@
                     <th scope="col">Eliminar</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody class="titulo-tabla">
                 @if (Model.Paquetes.Count > 0)
                 {
                     @foreach (var item in Model.Paquetes)
@@ -63,7 +63,7 @@
                             </td>
                             <td>$ @item.Monto_Pagar_Prop</td>
                             <td>
-                                <button type="button" id="Mostrar_Info" onclick="Users('?handler=Select&Id=@item.Id')" class="btn btn-outline-info">
+                                <button type="button" id="Mostrar_Info" onclick="Users('?handler=Select&Id=@item.Id')" class="btn btn-outline-info btn-mostrar-detalle">
                                     <i class="fas fa-eye"></i>
                                     Mostrar detalles
                                 </button>
@@ -78,7 +78,7 @@
                 }
                 else
                 {
-                    <tr>
+                    <tr class="registro-vacio">
                         <td colspan="12" class="text-center">No se encontraron registros</td>
                     </tr>}
             </tbody>
@@ -89,16 +89,16 @@
         <div>
             <div class="modal fade" id="Modal_Detalles" tabindex="-1" aria-labelledby="ModalDetallesLabel" aria-hidden="true">
                 <div class="modal-dialog">
-                    <div class="modal-content">
+                    <div class="modal-content background-model">
                         <div class="modal-header">
                             <h5 class="modal-title" id="ModalDetallesLabel">Detalles del paquete</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
                             <!--Se mostrará la información por medio de INPUTs-->
-                            <div class="row mb-4">
+                            <div class="row mb-4 modal-container">
                                 <div class="col">
-                                    <label class="text-muted">Contenido</label>
+                                    <label class="">Contenido</label>
                                     <div class="input-group">
                                         <span class="input-group-text">
                                             <i class="fas fa-box"></i>
@@ -107,7 +107,7 @@
                                     </div>
                                 </div>
                                 <div class="col">
-                                    <label class="text-muted">Tipo de contenido</label>
+                                    <label class="">Tipo de contenido</label>
                                     <div class="input-group">
                                         <span class="input-group-text">
                                             <i class="fas fa-tv"></i>
@@ -117,9 +117,9 @@
                                 </div>
                             </div>
 
-                            <div class="row mb-4">
+                            <div class="row mb-4 modal-container">
                                 <div class="col">
-                                    <label class="text-muted">Peso del paquete</label>
+                                    <label class="">Peso del paquete</label>
                                     <div class="input-group">
                                         <input class="form-control" id="Peso_Paquete" disabled />
                                         <span class="input-group-text">
@@ -128,7 +128,7 @@
                                     </div>
                                 </div>
                                 <div class="col">
-                                    <label class="text-muted">Fecha de entrega</label>
+                                    <label class="">Fecha de entrega</label>
                                     <div class="input-group">
                                         <span class="input-group-text">
                                             <i class="far fa-calendar"></i>
@@ -141,12 +141,12 @@
                             <div class="row mb-4 form-check">
                                 <div class="col">
                                     <input type="checkbox" class="form-check-input" id="Envio_Especial" disabled />
-                                    <label class='text-muted' id="Label_Check"></label>
+                                    <label class='' id="Label_Check"></label>
                                 </div>
                             </div>
                             <div class="row mb-4">
                                 <div class="col">
-                                    <label class="text-muted">Monto a cancelar</label>
+                                    <label class="">Monto a cancelar</label>
                                     <div class="input-group">
                                         <span class="input-group-text">$</span>
                                         <input class="form-control" id="Monto_Pagar" disabled />
@@ -240,7 +240,7 @@
                 let urlEdit = url.origin + url.pathname + `/Update?Id=${id}`;
                 $(".modal-footer")
                     .append(`
-                            <a href="${urlEdit}" class="btn btn-outline-success">
+                            <a href="${urlEdit}" class="btn btn-editar">
                                 <i class="fas fa-pencil-alt"></i>
                                 Editar
                             </a>

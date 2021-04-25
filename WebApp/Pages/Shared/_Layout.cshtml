@@ -13,119 +13,45 @@
     <link rel="stylesheet" href="~/dist/css/adminlte.min.css">
     <!--Bootstrap-->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
-
+    <link rel="stylesheet" href="~/css/Layout.css" />
     @await RenderSectionAsync("Styles", required: false)
 </head>
 <body class="hold-transition sidebar-mini layout-navbar-fixed">
     <!-- Site wrapper -->
-    <div class="wrapper">
-        <!-- Navbar -->
-        <nav class="main-header navbar navbar-expand navbar-white navbar-light">
-            <!-- Left navbar links -->
-            <ul class="navbar-nav">
-                <li class="nav-item">
-                    <a class="nav-link" data-widget="pushmenu" href="javascript:;" role="button"><i class="fas fa-bars"></i></a>
-                </li>
-            </ul>
-
-            <!-- Right navbar links -->
-            <ul class="navbar-nav ml-auto">
-                <li class="nav-item">
-                    <a class="nav-link" data-widget="fullscreen" href="javascript:;" role="button">
-                        <i class="fas fa-expand-arrows-alt"></i>
-                    </a>
-                </li>
-            </ul>
-        </nav>
-        <!-- /.navbar -->
-        <!-- Main Sidebar Container -->
-        <aside class="main-sidebar sidebar-dark-primary elevation-4">
-            <!-- Brand Logo -->
-            <a href="~/" class="brand-link">
-                <img src="~/dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
-                <span class="brand-text font-weight-light">AdminLTE 3</span>
-            </a>
-
-            <!-- Sidebar -->
-            <div class="sidebar">
-                <!-- Sidebar user (optional) -->
-                <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-                    <div class="image">
-                        <img src="~/dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
-                    </div>
-                    <div class="info">
-                        <a href="javascript:;" class="d-block">Alexander Pierce</a>
-                    </div>
-                </div>
-
-                <!-- Sidebar Menu -->
-                <nav class="mt-2">
-                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                        <!-- Add icons to the links using the .nav-icon class
-                        with font-awesome or any other icon font library -->
-                        <li class="nav-header">CATALOGOS</li>
-                        <li class="nav-item">
-                            <a asp-area="Paquetes" asp-page="Index" class="nav-link" id="a-paquete">
-                                <i class="fas fa-box-open"></i>
-                                <p>
-                                    Mis paquetes
-                                </p>
-                            </a>
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white">
+            <div class="container">
+                <h1 class="navbar-brand" style="color: #7aa5ef; font-size: 2rem;" asp-area="" asp-page="/Index">Delivery</h1>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-center">
+                    <ul class="navbar-nav flex-grow-1 d-sm-flex justify-content-center">
+                        <li class="nav-item mr-4 ">
+                            <a class="nav-link text-dark hello" asp-area="" asp-page="/Index">Home</a>
                         </li>
-                        @*<li class="nav-item">
-                                <a href="javascript:;" class="nav-link">
-                                    <i class="nav-icon far fa-envelope"></i>
-                                    <p>
-                                        Mailbox
-                                        <i class="fas fa-angle-left right"></i>
-                                    </p>
-                                </a>
-                                <ul class="nav nav-treeview">
-                                    <li class="nav-item">
-                                        <a href="../mailbox/mailbox.html" class="nav-link">
-                                            <i class="far fa-circle nav-icon"></i>
-                                            <p>Inbox</p>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a href="../mailbox/compose.html" class="nav-link">
-                                            <i class="far fa-circle nav-icon"></i>
-                                            <p>Compose</p>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a href="../mailbox/read-mail.html" class="nav-link">
-                                            <i class="far fa-circle nav-icon"></i>
-                                            <p>Read</p>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </li>*@
+                        <li class="nav-item mr-4">
+                            <a class="nav-link text-dark" asp-area="" asp-page="/Privacy">About</a>
+                        </li>
+                        <li class="nav-item mr-4">
+                            <a class="nav-link text-dark" asp-area="" asp-page="/Privacy">Sing In</a>
+                        </li>
+                        <li class="nav-item mr-4">
+                            <a class="nav-link text-dark" asp-area="" asp-page="/Privacy">Our Clients</a>
+                        </li>
+                        <li class="nav-item mr-4">
+                            <a class="nav-link text-dark" asp-area="Paquetes" asp-page="Index">Paquetes</a>
+                        </li>
                     </ul>
-                </nav>
-                <!-- /.sidebar-menu -->
+                </div>
             </div>
-            <!-- /.sidebar -->
-        </aside>
-
-        <!-- Content Wrapper. Contains page content -->
-        <div class="content-wrapper">
+        </nav>
+    </header>
+    <div class="container">
+        <main role="main" class="pb-3">
             @RenderBody()
-        </div>
-        <!-- /.content-wrapper -->
-
-        <footer class="main-footer">
-            <div class="float-right d-none d-sm-block">
-                <b>Version</b> 3.1.0-rc
-            </div>
-            <strong>Copyright &copy; 2014-2020 <a href="https://adminlte.io">AdminLTE.io</a>.</strong> All rights reserved.
-        </footer>
-
-        <!-- Control Sidebar -->
-        <aside class="control-sidebar control-sidebar-dark">
-            <!-- Control sidebar content goes here -->
-        </aside>
-        <!-- /.control-sidebar -->
+        </main>
     </div>
     <!-- ./wrapper -->
     <!-- jQuery -->
